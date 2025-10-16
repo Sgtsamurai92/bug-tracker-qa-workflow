@@ -46,7 +46,7 @@ class TestBugCRUD:
         assert dashboard_page.is_success_message_displayed(), "Success message should be displayed"
         
         # Verify bug appears in the list (check if title exists in page source)
-        time.sleep(1)  # Brief wait for page to update
+        time.sleep(2)  # Wait for page to fully update
         assert bug_title in driver.page_source, "New bug should appear in the dashboard"
     
     def test_create_bug_with_all_severity_levels(self, driver, base_url, login_as_reporter):
@@ -107,7 +107,7 @@ class TestBugCRUD:
             status='Open'
         )
         
-        time.sleep(1)
+        time.sleep(2)  # Wait for creation to complete
         
         # Find and edit the bug - use the first available edit button
         # Since we just created it, it should be visible
@@ -118,6 +118,7 @@ class TestBugCRUD:
             bug_id = first_row.get_attribute('data-test').replace('bug-row-', '')
             
             dashboard_page.click_edit_bug(int(bug_id))
+            time.sleep(1)  # Wait for form to load
             bug_form_page.edit_bug(
                 title=updated_title,
                 description="Updated description",

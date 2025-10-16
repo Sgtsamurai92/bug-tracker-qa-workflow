@@ -30,7 +30,7 @@ class TestFilterAndPermissions:
         dashboard_page.filter_by_status('Open')
         
         # Assert
-        time.sleep(1)
+        time.sleep(2)  # Wait for filter to apply
         # Verify URL contains filter parameter
         current_url = dashboard_page.get_current_url()
         assert 'status=Open' in current_url, "URL should contain status filter parameter"
@@ -61,7 +61,7 @@ class TestFilterAndPermissions:
         dashboard_page.filter_by_status('Closed')
         
         # Assert
-        time.sleep(1)
+        time.sleep(2)  # Wait for filter to apply
         current_url = dashboard_page.get_current_url()
         assert 'status=Closed' in current_url, "URL should contain status filter parameter"
         
@@ -90,7 +90,7 @@ class TestFilterAndPermissions:
         dashboard_page.filter_by_severity('High')
         
         # Assert
-        time.sleep(1)
+        time.sleep(2)  # Wait for filter to apply
         current_url = dashboard_page.get_current_url()
         assert 'severity=High' in current_url, "URL should contain severity filter parameter"
         
@@ -186,7 +186,7 @@ class TestFilterAndPermissions:
         login_page.login('reporter@example.com', 'password123')
         
         # Assert
-        time.sleep(1)
+        time.sleep(2)  # Wait for dashboard to load
         # Look for bugs not created by reporter (sample bugs created by manager)
         bug_rows = dashboard_page.get_all_bug_rows()
         
@@ -226,7 +226,7 @@ class TestFilterAndPermissions:
             status='Open'
         )
         
-        time.sleep(1)
+        time.sleep(2)  # Wait for bug creation
         
         # Assert - Verify edit button is available
         bug_rows = dashboard_page.get_all_bug_rows()
@@ -266,7 +266,7 @@ class TestFilterAndPermissions:
             status='Open'
         )
         
-        time.sleep(1)
+        time.sleep(2)  # Wait for bug creation
         
         # Get bug ID and delete
         bug_rows = dashboard_page.get_all_bug_rows()
@@ -303,7 +303,7 @@ class TestFilterAndPermissions:
         login_page.navigate_to_login()
         login_page.login('manager@example.com', 'password123')
         
-        time.sleep(1)
+        time.sleep(2)  # Wait for dashboard to load
         
         # Assert - Manager should see edit/delete buttons for all bugs
         bug_rows = dashboard_page.get_all_bug_rows()
@@ -338,7 +338,7 @@ class TestFilterAndPermissions:
         login_page.navigate_to_login()
         login_page.login('manager@example.com', 'password123')
         
-        time.sleep(1)
+        time.sleep(2)  # Wait for dashboard to load
         
         # Find any bug and try to edit
         bug_rows = dashboard_page.get_all_bug_rows()

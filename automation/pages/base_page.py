@@ -15,9 +15,9 @@ class BasePage:
     def __init__(self, driver):
         """Initialize the base page with a WebDriver instance."""
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 15)
     
-    def find_element(self, locator, timeout=10):
+    def find_element(self, locator, timeout=15):
         """
         Find an element with explicit wait.
         

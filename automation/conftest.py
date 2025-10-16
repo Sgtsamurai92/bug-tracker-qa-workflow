@@ -31,11 +31,15 @@ def driver(request):
     # Set up Chrome options
     chrome_options = Options()
     
-    # Check if running in CI or headless mode
-    if os.environ.get('CI') or os.environ.get('HEADLESS'):
+    # Check if running in CI or headless mode (only run headless when explicitly set)
+    if os.environ.get('CI') or os.environ.get('HEADLESS') == 'true':
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
+    
+    # Enable verbose logging for debugging
+    chrome_options.add_argument('--enable-logging')
+    chrome_options.add_argument('--v=1')
     
     # Additional options for stability
     chrome_options.add_argument('--disable-gpu')
@@ -61,12 +65,15 @@ def driver(request):
         print("Attempting to use Chrome driver from system PATH...")
         driver = webdriver.Chrome(options=chrome_options)
     
-    # Implicit wait
-    driver.implicitly_wait(10)
+    # Set implicit wait for better stability
+    driver.implicitly_wait(15)
     
-    # Maximize window (if not headless)
-    if not chrome_options.arguments.__contains__('--headless'):
+    # Maximize window for better visibility
+    try:
         driver.maximize_window()
+    except:
+        # Fallback if maximize fails
+        driver.set_window_size(1920, 1080)
     
     # Yield driver to test
     yield driver

@@ -4,6 +4,7 @@ Tests for valid and invalid login scenarios.
 """
 
 import pytest
+import time
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 
@@ -30,6 +31,9 @@ class TestLogin:
         login_page.navigate_to_login()
         login_page.login('reporter@example.com', 'password123')
         
+        # Wait for dashboard to load
+        time.sleep(2)
+        
         # Assert
         assert dashboard_page.is_on_dashboard(), "User should be on dashboard after valid login"
         assert 'reporter@example.com' in dashboard_page.get_user_email(), "User email should be displayed"
@@ -53,6 +57,9 @@ class TestLogin:
         # Act
         login_page.navigate_to_login()
         login_page.login('manager@example.com', 'password123')
+        
+        # Wait for dashboard to load
+        time.sleep(2)
         
         # Assert
         assert dashboard_page.is_on_dashboard(), "User should be on dashboard after valid login"
