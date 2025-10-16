@@ -1,0 +1,21 @@
+Data_ID,Data_Type,Email,Password,Role,Bug_Title,Bug_Description,Bug_Severity,Bug_Status,Notes
+TD001,Valid User - Reporter,reporter@example.com,password123,reporter,,,,,Primary reporter account for testing
+TD002,Valid User - Manager,manager@example.com,password123,manager,,,,,Primary manager account for testing
+TD003,Invalid User,invalid@example.com,password123,N/A,,,,,Non-existent user for negative testing
+TD004,Invalid Password,reporter@example.com,wrongpassword,N/A,,,,,Valid user with wrong password
+TD005,Empty Credentials,,,N/A,,,,,For validation testing
+TD006,Sample Bug - High Severity,,,,,Login button not responding,When clicking the login button nothing happens on slow connections,High,Open,Pre-seeded sample bug
+TD007,Sample Bug - Medium Severity,,,,,Dashboard loading slowly,Dashboard takes more than 5 seconds to load with 100+ bugs,Medium,Open,Pre-seeded sample bug
+TD008,Sample Bug - Low Severity,,,,,Typo in header,The header says Bug Trakcer instead of Bug Tracker,Low,Closed,Pre-seeded sample bug
+TD009,Test Bug - Create,,,,,New Test Bug,This is a test bug created during testing,High,Open,For create operations
+TD010,Test Bug - Edit,,,,,Updated Bug Title,This bug has been updated during testing,Medium,Closed,For edit operations
+TD011,Test Bug - Low Priority,,,,,Minor UI Issue,Small alignment issue on dashboard,Low,Open,For filter testing
+TD012,Test Bug - Medium Priority,,,,,Performance Issue,Page loads slowly under load,Medium,Open,For filter testing
+TD013,Test Bug - High Priority,,,,,Critical Security Bug,SQL injection vulnerability found,High,Open,For filter testing
+TD014,Test Bug - Closed,,,,,Fixed Bug,This bug has been resolved,Medium,Closed,For status filter testing
+TD015,Long Title Test,,,,,This is a very long bug title to test the maximum length handling and UI display of lengthy titles in the bug tracker system,Testing long title handling,Low,Open,Edge case testing
+TD016,Special Characters,,,,,Bug with special chars: @#$%^&*(),Testing special character handling in title and description fields: <>?/|,Medium,Open,Edge case testing
+TD017,Minimum Data,,,,,Bug,Description,Low,Open,Minimum required fields
+TD018,XSS Test,,,,,<script>alert('XSS')</script>,Attempting XSS injection,Low,Open,Security testing data
+TD019,SQL Injection Test,,,,,'; DROP TABLE bugs; --,Testing SQL injection prevention,High,Open,Security testing data
+TD020,Unicode Test,,,,,Bug with émojis 🐛🔧,Testing Unicode and emoji support: 你好 مرحبا,Medium,Open,Internationalization testing

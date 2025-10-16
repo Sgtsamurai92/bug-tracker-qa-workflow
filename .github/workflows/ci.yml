@@ -1,0 +1,85 @@
+name: Bug Tracker QA Workflow CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Selenium Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r automation/requirements.txt
+    
+    - name: Install Chrome
+      uses: browser-actions/setup-chrome@latest
+      with:
+        chrome-version: stable
+    
+    - name: Start Flask application
+      run: |
+        cd app
+        python app.py &
+        echo $! > flask_pid.txt
+        sleep 5
+      env:
+        FLASK_ENV: testing
+    
+    - name: Wait for application to start
+      run: |
+        timeout 30 bash -c 'until curl -s http://localhost:5000; do sleep 1; done'
+    
+    - name: Run Selenium tests
+      run: |
+        cd automation
+        pytest tests/ \
+          --html=reports/report.html \
+          --self-contained-html \
+          -v
+      env:
+        HEADLESS: true
+        BASE_URL: http://localhost:5000
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          automation/reports/report.html
+          automation/reports/screenshots/
+    
+    - name: Upload screenshots on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: failure-screenshots
+        path: automation/reports/screenshots/
+    
+    - name: Stop Flask application
+      if: always()
+      run: |
+        if [ -f app/flask_pid.txt ]; then
+          kill $(cat app/flask_pid.txt) || true
+        fi
+    
+    - name: Publish test summary
+      if: always()
+      uses: test-summary/action@v2
+      with:
+        paths: "automation/reports/report.html"

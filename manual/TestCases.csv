@@ -1,0 +1,70 @@
+Test_ID,Test_Case_Name,Test_Objective,Preconditions,Test_Steps,Test_Data,Expected_Result,Actual_Result,Status,Priority,Tested_By,Date
+TC001,Valid Login - Reporter,Verify reporter can login with valid credentials,"Application is running, Reporter account exists","1. Navigate to login page
+2. Enter email: reporter@example.com
+3. Enter password: password123
+4. Click Login button",reporter@example.com / password123,"User is redirected to dashboard, Email and role displayed",,Not Tested,High,,
+TC002,Valid Login - Manager,Verify manager can login with valid credentials,"Application is running, Manager account exists","1. Navigate to login page
+2. Enter email: manager@example.com
+3. Enter password: password123
+4. Click Login button",manager@example.com / password123,"User is redirected to dashboard, Email and role displayed",,Not Tested,High,,
+TC003,Invalid Login - Wrong Email,Verify error message for invalid email,"Application is running","1. Navigate to login page
+2. Enter email: invalid@example.com
+3. Enter password: password123
+4. Click Login button",invalid@example.com / password123,"Error message displayed, User remains on login page",,Not Tested,High,,
+TC004,Invalid Login - Wrong Password,Verify error message for incorrect password,"Application is running","1. Navigate to login page
+2. Enter email: reporter@example.com
+3. Enter password: wrongpassword
+4. Click Login button",reporter@example.com / wrongpassword,"Error message displayed, User remains on login page",,Not Tested,High,,
+TC005,Login - Empty Credentials,Verify validation for empty credentials,"Application is running","1. Navigate to login page
+2. Leave email and password empty
+3. Click Login button",Empty fields,"HTML5 validation prevents submission",,Not Tested,Medium,,
+TC006,User Logout,Verify logout functionality,"User is logged in","1. Click Logout button",N/A,"User redirected to login page, Session cleared",,Not Tested,High,,
+TC007,Create New Bug - Valid Data,Verify bug creation with all required fields,"User logged in as reporter","1. Click Create New Bug
+2. Enter title: Test Bug
+3. Enter description: Bug description
+4. Select severity: High
+5. Select status: Open
+6. Click Create Bug","Title: Test Bug, Description: Bug description, Severity: High, Status: Open","Bug created successfully, Appears in dashboard, Success message displayed",,Not Tested,High,,
+TC008,Create Bug - Missing Title,Verify validation for missing title,"User logged in as reporter","1. Click Create New Bug
+2. Leave title empty
+3. Fill description and other fields
+4. Click Create Bug","Title: empty, Description: Test, Severity: Medium, Status: Open","Validation error displayed, Form not submitted",,Not Tested,High,,
+TC009,Create Bug - Missing Description,Verify validation for missing description,"User logged in as reporter","1. Click Create New Bug
+2. Fill title
+3. Leave description empty
+4. Fill other fields
+5. Click Create Bug","Title: Test, Description: empty, Severity: Medium, Status: Open","Validation error displayed, Form not submitted",,Not Tested,High,,
+TC010,Edit Existing Bug,Verify bug can be edited,"User logged in, Bug exists created by same user","1. Click Edit on a bug
+2. Modify title
+3. Click Update Bug","Modified title","Bug updated successfully, Changes reflected in dashboard",,Not Tested,High,,
+TC011,Delete Own Bug - Reporter,Verify reporter can delete their own bug,"Reporter logged in, Bug created by reporter","1. Click Delete on own bug
+2. Confirm deletion",Bug created by reporter,"Bug deleted successfully, Removed from list",,Not Tested,High,,
+TC012,Filter by Status - Open,Verify filtering by Open status,"User logged in, Multiple bugs exist","1. Select Status: Open
+2. Click Apply Filters",Status: Open,"Only Open bugs displayed",,Not Tested,Medium,,
+TC013,Filter by Status - Closed,Verify filtering by Closed status,"User logged in, Multiple bugs exist","1. Select Status: Closed
+2. Click Apply Filters",Status: Closed,"Only Closed bugs displayed",,Not Tested,Medium,,
+TC014,Filter by Severity - High,Verify filtering by High severity,"User logged in, Multiple bugs exist","1. Select Severity: High
+2. Click Apply Filters",Severity: High,"Only High severity bugs displayed",,Not Tested,Medium,,
+TC015,Filter by Severity - Medium,Verify filtering by Medium severity,"User logged in, Multiple bugs exist","1. Select Severity: Medium
+2. Click Apply Filters",Severity: Medium,"Only Medium severity bugs displayed",,Not Tested,Medium,,
+TC016,Filter by Severity - Low,Verify filtering by Low severity,"User logged in, Multiple bugs exist","1. Select Severity: Low
+2. Click Apply Filters",Severity: Low,"Only Low severity bugs displayed",,Not Tested,Medium,,
+TC017,Clear Filters,Verify clear filters functionality,"User logged in, Filters applied","1. Apply any filter
+2. Click Clear button",Any filter,"All bugs displayed, Filters reset",,Not Tested,Medium,,
+TC018,Reporter Cannot Edit Others Bug,Verify reporter cannot edit manager's bug,"Reporter logged in, Bug created by manager exists","1. View bug created by manager",Bug by manager@example.com,"No Edit button visible OR Edit button disabled",,Not Tested,High,,
+TC019,Reporter Cannot Delete Others Bug,Verify reporter cannot delete manager's bug,"Reporter logged in, Bug created by manager exists","1. View bug created by manager",Bug by manager@example.com,"No Delete button visible OR Delete button disabled",,Not Tested,High,,
+TC020,Manager Can Edit Any Bug,Verify manager can edit any bug,"Manager logged in, Bugs exist from different users","1. View bug created by reporter
+2. Click Edit button",Bug by reporter@example.com,"Edit form opens, Manager can modify bug",,Not Tested,High,,
+TC021,Manager Can Delete Any Bug,Verify manager can delete any bug,"Manager logged in, Bugs exist from different users","1. View bug created by reporter
+2. Click Delete button
+3. Confirm deletion",Bug by reporter@example.com,"Bug deleted successfully",,Not Tested,High,,
+TC022,Cancel Bug Creation,Verify cancel functionality on create form,"User logged in","1. Click Create New Bug
+2. Fill some fields
+3. Click Cancel",Partial data entered,"User returned to dashboard, Bug not created",,Not Tested,Medium,,
+TC023,Bug Status Update,Verify status can be updated,"User logged in, Bug exists","1. Edit bug
+2. Change status from Open to Closed
+3. Save",Status change,"Status updated successfully",,Not Tested,Medium,,
+TC024,Dashboard Display,Verify dashboard displays bugs correctly,"User logged in, Bugs exist","1. Navigate to dashboard",Multiple bugs,"Bugs displayed in table format with all fields visible",,Not Tested,Medium,,
+TC025,Create Bug - All Severity Levels,Verify all severity levels can be selected,"User logged in","1. Create bug with Low severity
+2. Create bug with Medium severity
+3. Create bug with High severity","Low, Medium, High","All bugs created with correct severity",,Not Tested,Medium,,
