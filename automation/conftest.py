@@ -6,6 +6,8 @@ import pytest
 import os
 from datetime import datetime
 from selenium import webdriver
+import tempfile
+import shutil
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
@@ -31,6 +33,28 @@ def driver(request):
     # Set up Chrome options
     chrome_options = Options()
     
+    # Use a fresh temporary profile and suppress first-run UI
+    temp_profile_dir = tempfile.mkdtemp(prefix="chrome-profile-")
+    chrome_options.add_argument(f"--user-data-dir={temp_profile_dir}")
+    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--no-default-browser-check")
+    chrome_options.add_argument("--disable-first-run-ui")
+    chrome_options.add_argument("--incognito")
+    
+    # Disable password manager, leak detection, and related UI bubbles
+    prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False,
+        "autofill.profile_enabled": False,
+        "autofill.credit_card_enabled": False,
+        "profile.default_content_setting_values.notifications": 2,
+        "profile.default_content_setting_values.popups": 0,
+    }
+    chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument("--disable-save-password-bubble")
+    chrome_options.add_argument("--disable-features=PasswordManagerOnboarding,PasswordLeakDetection,SafeBrowsingEnhancedProtection")
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    
     # Check if running in CI or headless mode (only run headless when explicitly set)
     if os.environ.get('CI') or os.environ.get('HEADLESS') == 'true':
         chrome_options.add_argument('--headless')
@@ -46,6 +70,7 @@ def driver(request):
     chrome_options.add_argument('--window-size=1920,1080')
     chrome_options.add_argument('--disable-extensions')
     chrome_options.add_argument('--disable-notifications')
+    chrome_options.add_argument('--disable-infobars')
     
     # Initialize Chrome driver with proper path
     try:
@@ -84,6 +109,11 @@ def driver(request):
     
     # Close browser
     driver.quit()
+    # Clean up the temporary Chrome profile directory
+    try:
+        shutil.rmtree(temp_profile_dir, ignore_errors=True)
+    except Exception as _:
+        pass
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
