@@ -49,6 +49,7 @@ jobs:
         cd automation
         pytest tests/ \
           --html=reports/report.html \
+          --junitxml=reports/junit.xml \
           --self-contained-html \
           -v
       env:
@@ -62,6 +63,7 @@ jobs:
         name: test-results
         path: |
           automation/reports/report.html
+          automation/reports/junit.xml
           automation/reports/screenshots/
     
     - name: Upload screenshots on failure
@@ -82,4 +84,4 @@ jobs:
       if: always()
       uses: test-summary/action@v2
       with:
-        paths: "automation/reports/report.html"
+        paths: "automation/reports/junit.xml"
