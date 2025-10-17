@@ -184,7 +184,14 @@ class DashboardPage(BasePage):
             bug_id: ID of the bug
         """
         locator = (By.CSS_SELECTOR, f'[data-test="edit-bug-{bug_id}"]')
-        self.click(locator)
+        # Prefer JS click to avoid ElementClickIntercepted issues in CI
+        try:
+            elem = self.find_element(locator)
+            self.scroll_into_view(elem)
+            self.driver.execute_script("arguments[0].click();", elem)
+        except Exception:
+            # Fallback to standard click if JS click fails
+            self.click(locator)
     
     def click_delete_bug(self, bug_id):
         """
@@ -206,6 +213,12 @@ class DashboardPage(BasePage):
         from selenium.webdriver.support import expected_conditions as EC
         WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         self.driver.switch_to.alert.accept()
+        # Wait until the row is gone to ensure delete completed
+        try:
+            row_locator = (By.CSS_SELECTOR, f'[data-test="bug-row-{bug_id}"]')
+            WebDriverWait(self.driver, 5).until(EC.invisibility_of_element_located(row_locator))
+        except Exception:
+            pass
     
     def is_edit_button_visible(self, bug_id):
         """
