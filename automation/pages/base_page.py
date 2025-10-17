@@ -3,10 +3,15 @@ Base Page Object
 Contains common methods used across all page objects.
 """
 
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import (
+    TimeoutException,
+    NoSuchElementException,
+    ElementClickInterceptedException,
+)
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.select import Select
 
 
 class BasePage:
@@ -55,17 +60,42 @@ class BasePage:
         except TimeoutException:
             return []
     
+    def scroll_into_view(self, element):
+        """Scroll element into view, centered in the viewport."""
+        try:
+            self.driver.execute_script(
+                "arguments[0].scrollIntoView({block: 'center', inline: 'center'});",
+                element,
+            )
+        except Exception:
+            pass
+
     def click(self, locator):
         """
         Click an element after waiting for it to be clickable.
+        Includes scroll into view and JS-click fallback to avoid interception.
         
         Args:
             locator: Tuple of (By.LOCATOR_TYPE, 'locator_value')
         """
-        element = WebDriverWait(self.driver, 10).until(
+        element = WebDriverWait(self.driver, 15).until(
             EC.element_to_be_clickable(locator)
         )
-        element.click()
+        # Try normal click with scroll and slight move
+        self.scroll_into_view(element)
+        try:
+            ActionChains(self.driver).move_to_element(element).pause(0.05).perform()
+            element.click()
+            return
+        except ElementClickInterceptedException:
+            pass
+        except Exception:
+            # Try JS click as a fallback for any click interception
+            pass
+        try:
+            self.driver.execute_script("arguments[0].click();", element)
+        except Exception as e:
+            raise e
     
     def enter_text(self, locator, text):
         """

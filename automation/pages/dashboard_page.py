@@ -194,8 +194,17 @@ class DashboardPage(BasePage):
             bug_id: ID of the bug
         """
         locator = (By.CSS_SELECTOR, f'[data-test="delete-bug-{bug_id}"]')
+        # Ensure row and button are in view before clicking
+        try:
+            row = self.get_bug_row(bug_id)
+            self.scroll_into_view(row)
+        except Exception:
+            pass
         self.click(locator)
-        # Handle JavaScript confirm dialog
+        # Handle JavaScript confirm dialog with an explicit wait
+        from selenium.webdriver.support.wait import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        WebDriverWait(self.driver, 5).until(EC.alert_is_present())
         self.driver.switch_to.alert.accept()
     
     def is_edit_button_visible(self, bug_id):
