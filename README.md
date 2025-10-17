@@ -1,5 +1,10 @@
 # Bug Tracker QA Workflow
 
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
+[![Selenium](https://img.shields.io/badge/Selenium-4.15+-brightgreen.svg)](https://www.selenium.dev/)
+[![Pytest](https://img.shields.io/badge/Pytest-7.4+-yellow.svg)](https://docs.pytest.org/)
+[![CI Status](https://github.com/Sgtsamurai92/bug-tracker-qa-workflow/actions/workflows/ci.yml/badge.svg)](https://github.com/Sgtsamurai92/bug-tracker-qa-workflow/actions/workflows/ci.yml)
+
 A complete QA portfolio project that showcases a real-world testing workflow from requirements and manual testing to Selenium automation and CI.
 
 This repository contains:
