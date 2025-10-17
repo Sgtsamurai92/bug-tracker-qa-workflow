@@ -7,6 +7,8 @@
 
 A complete QA portfolio project that showcases a real-world testing workflow from requirements and manual testing to Selenium automation and CI.
 
+![What app looks like](automation\reports\screenshots\applooks.png)
+
 This repository contains:
 - A Flask-based Bug Tracker web application (SQLite database)
 - A Selenium + Pytest automation suite using the Page Object Model
