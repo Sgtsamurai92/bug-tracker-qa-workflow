@@ -7,14 +7,23 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from models import db, User, Bug
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dev-secret-key-change-in-production'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bugtracker.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['BASE_PATH'] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Initialize database
 db.init_app(app)
+
+# Register support chat blueprint
+from support import support_bp
+app.register_blueprint(support_bp)
 
 
 def init_db():
