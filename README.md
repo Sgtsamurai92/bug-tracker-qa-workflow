@@ -45,6 +45,10 @@ This project demonstrates an end-to-end QA workflow:
 - Filter by status and severity
 - Role-based permissions for actions
 - Responsive Bootstrap user interface
+- **AI-Powered Support Chat**: Embedded support assistant using OpenAI GPT-4o-mini
+- **Smart Documentation**: Automatically generates help articles from user questions
+- **Help Articles Library**: Searchable collection of user-generated documentation
+- **Context-Aware Assistance**: Bot scans codebase and docs to provide accurate answers
 
 ### Automation Test Suite
 - Page Object Model structure
@@ -58,6 +62,8 @@ This project demonstrates an end-to-end QA workflow:
 - Python 3.11+, Flask 3.x
 - SQLite
 - HTML5, CSS3, Bootstrap 5
+- OpenAI API (GPT-4o-mini)
+- Flask-SQLAlchemy 3.1+
 
 **Automation**
 - Selenium 4
@@ -74,14 +80,17 @@ bug-tracker-qa-workflow/
 ├─ app/
 │  ├─ app.py              # Flask app entrypoint
 │  ├─ models.py           # SQLAlchemy models
-│  ├─ templates/          # Jinja2 templates (login, dashboard, bug form)
-│  └─ static/             # CSS
+│  ├─ templates/          # Jinja2 templates (login, dashboard, bug form, help articles)
+│  ├─ static/             # CSS and JavaScript (including support chat widget)
+│  └─ support/            # AI support chat module (routes, prompts, LLM helper, context builder)
 ├─ automation/
 │  ├─ pages/              # Page Objects (Base, Login, Dashboard, Bug Form)
 │  ├─ tests/              # Pytest test cases
 │  ├─ reports/            # HTML reports and screenshots
 │  ├─ pytest.ini          # Pytest configuration
 │  └─ requirements.txt    # App + test dependencies
+├─ docs/                  # Application documentation (getting started guide)
+├─ help_articles/         # AI-generated help articles (markdown)
 ├─ manual/                # Manual test artifacts (cases, data, evidence)
 ├─ README.md
 └─ .github/workflows/ci.yml
@@ -108,7 +117,14 @@ python -m venv .venv
 
 # Install dependencies
 pip install -r automation\requirements.txt
+
+# Set up OpenAI API key (required for AI support chat)
+# Create a .env file in the project root:
+echo "OPENAI_API_KEY=your_api_key_here" > .env
+echo "SECRET_KEY=your_secret_key_here" >> .env
 ```
+
+> **Note**: The AI support chat feature requires an OpenAI API key. Get one at [platform.openai.com](https://platform.openai.com). The app will still work without it, but the support chat will be unavailable.
 
 ## Running the Application
 
@@ -130,6 +146,21 @@ Keep this terminal open while running tests.
 
 ### Sample Data
 - Database is pre-seeded with a few example bugs of varying severity.
+
+### AI Support Features
+
+Once the app is running with a valid OpenAI API key:
+
+1. **Support Chat Widget**: Click the purple chat bubble (💬) in the bottom-right corner
+2. **Ask Questions**: Get instant answers about Bug Tracker features and workflows
+3. **Generate Documentation**: The bot automatically creates help articles when it detects knowledge gaps
+4. **Help Articles Library**: View all generated documentation at `/help-articles`
+
+The AI assistant:
+- Scans the codebase and documentation for accurate answers
+- Detects when documentation is missing and proposes new articles
+- Provides step-by-step guidance for common tasks
+- Stays focused on Bug Tracker features only
 
 ## Running Tests
 
@@ -186,6 +217,8 @@ start automation\reports\report.html
 - `RTM.MD` – Requirements Traceability Matrix (features ↔ tests)
 - `BUG_REPORT_TEMPLATE.md` – Standardized bug report format
 - `manual/` – Manual test cases (CSV), test data, and evidence
+- `docs/` – Application documentation including getting started guide
+- `help_articles/` – AI-generated help articles in Markdown format
 
 ## CI/CD Pipeline
 
@@ -204,6 +237,13 @@ See `.github/workflows/ci.yml` for details.
   - webdriver-manager downloads the appropriate driver automatically; make sure Chrome is installed and up-to-date.
 - Port 5000 already in use
   - Stop other processes or change the Flask app port if needed.
+- Support chat not working
+  - Verify your OpenAI API key is set correctly in the `.env` file
+  - Check that `openai` package is version 2.9.0 or higher (`pip install --upgrade openai`)
+  - Ensure you have an active internet connection
+- Session/login issues
+  - Clear browser cookies or use incognito mode
+  - Check that `flask_session` directory exists and is writable
 - Clean install
   - If dependencies are inconsistent, recreate the virtual environment and reinstall requirements:
     ```powershell
@@ -213,6 +253,22 @@ See `.github/workflows/ci.yml` for details.
     .\.venv\Scripts\Activate.ps1
     pip install -r automation\requirements.txt
     ```
+
+## Recent Updates
+
+### AI Support Chat Integration (December 2025)
+- Added embedded AI support assistant using OpenAI GPT-4o-mini
+- Implemented automatic help article generation based on user questions
+- Created Help Articles page with search functionality and modal viewer
+- Added context-aware support that scans codebase and documentation
+- Included 3 initial help articles (Getting Started, Bug Creation, User Roles)
+
+### Bug Fixes and Improvements
+- Fixed login redirect loop with proper Flask session configuration
+- Upgraded OpenAI SDK to v2.9.0 for compatibility
+- Corrected role permissions documentation (Reporters can delete own bugs)
+- Added responsive navigation with Help Articles link
+- Improved error handling in support chat
 
 ---
 
