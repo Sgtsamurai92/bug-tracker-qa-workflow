@@ -20,12 +20,12 @@ The Bug Tracker is a web-based application designed to help teams manage softwar
 - Can create new bug reports
 - Can view all bugs
 - Can edit their own bug reports
-- Cannot delete bugs
+- Can delete their own bug reports
 
 ### Manager
 - All reporter capabilities
-- Can edit any bug report
-- Can delete bug reports
+- Can edit any bug report (including others' bugs)
+- Can delete any bug report (including others' bugs)
 - Can change bug status and assignments
 - Can generate reports
 
@@ -70,10 +70,14 @@ The dashboard displays all bugs in a table format with the following columns:
 2. Modify the necessary fields
 3. Click "Update Bug" to save changes
 
-### Deleting a Bug (Manager Only)
+### Deleting a Bug
 
 1. Click the "Delete" button next to a bug
 2. Confirm the deletion in the popup
+
+**Note:** 
+- Reporters can delete bugs they created
+- Managers can delete any bug
 
 ### Filtering Bugs
 
@@ -130,8 +134,9 @@ Use the filter dropdown above the bug table to:
 
 ### Can't Edit/Delete Bug
 - Check your role permissions
-- Reporters can only edit their own bugs
-- Only managers can delete bugs
+- Reporters can only edit and delete their own bugs
+- Managers can edit and delete any bug
+- You can only delete bugs if you created them (Reporter) or have manager role
 
 ### Dashboard Not Loading
 - Refresh the page

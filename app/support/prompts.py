@@ -9,8 +9,8 @@ This is a web-based bug tracking system that helps teams manage software issues 
 - Log in with username and password (with role-based access: Reporter and Manager)
 - Create new bug reports with title, description, severity, priority, and status
 - View all bug reports in a dashboard table
-- Edit existing bug reports (reporters can edit their own, managers can edit any)
-- Delete bug reports (managers only)
+- Edit existing bug reports (reporters can edit their own bugs, managers can edit any bug)
+- Delete bug reports (reporters can delete their own bugs, managers can delete any bug)
 - Filter bugs by status (Open, In Progress, Closed, Fixed, Reopened, Won't Fix)
 - Assign bugs to team members
 - Track bug lifecycle from creation to resolution

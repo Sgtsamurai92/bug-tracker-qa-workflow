@@ -18,6 +18,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bugtracker.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['BASE_PATH'] = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Session configuration
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
 # Initialize database
 db.init_app(app)
 
@@ -90,6 +97,18 @@ def index():
     if 'user_email' in session:
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
+
+
+@app.route('/help-articles')
+def help_articles():
+    """Display all help articles created by the support assistant."""
+    if 'user_email' not in session:
+        flash('Please log in to access help articles.', 'error')
+        return redirect(url_for('login'))
+    
+    return render_template('help_articles.html',
+                         user_email=session['user_email'],
+                         user_role=session['user_role'])
 
 
 @app.route('/login', methods=['GET', 'POST'])

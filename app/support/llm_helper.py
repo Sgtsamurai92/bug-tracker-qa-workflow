@@ -3,11 +3,11 @@ LLM integration helper for OpenAI API.
 """
 
 import os
-import openai
+from openai import OpenAI
 from typing import Optional, List, Dict
 
 # Initialize OpenAI client
-openai.api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 
 def call_llm(
@@ -40,7 +40,7 @@ def call_llm(
             system_prompt = system_prompt.format(context="No additional context provided.")
         
         # Create chat completion
-        response = openai.chat.completions.create(
+        response = client.chat.completions.create(
             model=model,
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -52,12 +52,9 @@ def call_llm(
         
         return response.choices[0].message.content
     
-    except openai.OpenAIError as e:
-        print(f"OpenAI API error: {e}")
-        return f"I'm sorry, I encountered an error processing your request. Please try again later."
     except Exception as e:
-        print(f"Unexpected error in LLM call: {e}")
-        return "I'm sorry, something went wrong. Please try again."
+        print(f"Error in LLM call: {e}")
+        return "I'm sorry, I encountered an error processing your request. Please try again later."
 
 
 def call_llm_with_history(
@@ -94,7 +91,7 @@ def call_llm_with_history(
         messages.extend(conversation_history)
         
         # Create chat completion
-        response = openai.chat.completions.create(
+        response = client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=temperature,
@@ -103,9 +100,6 @@ def call_llm_with_history(
         
         return response.choices[0].message.content
     
-    except openai.OpenAIError as e:
-        print(f"OpenAI API error: {e}")
-        return f"I'm sorry, I encountered an error processing your request. Please try again later."
     except Exception as e:
-        print(f"Unexpected error in LLM call: {e}")
-        return "I'm sorry, something went wrong. Please try again."
+        print(f"Error in LLM call: {e}")
+        return "I'm sorry, I encountered an error processing your request. Please try again later."
